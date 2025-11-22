@@ -1,14 +1,17 @@
 package com.anchormacro.command;
 
 import com.anchormacro.AnchorMacroAdvanced;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 
 public class GGCommand {
 
-    public static void register(net.minecraft.client.command.CommandDispatcher<net.minecraft.client.command.ClientCommandSource> dispatcher) {
+    public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
         dispatcher.register(ClientCommandManager.literal("gg")
             .then(ClientCommandManager.literal("enable")
                 .executes(ctx -> {
@@ -110,6 +113,6 @@ public class GGCommand {
     }
 
     private static void sendFeedback(String msg) {
-        MinecraftClient.getInstance().player.sendMessage(new net.minecraft.text.LiteralText("[AnchorMacro] " + msg), false);
+        MinecraftClient.getInstance().player.sendMessage(Text.literal("[AnchorMacro] " + msg), false);
     }
 }
