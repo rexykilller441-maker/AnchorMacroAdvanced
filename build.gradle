@@ -12,16 +12,16 @@ targetCompatibility = '21'
 repositories {
     mavenCentral()
     maven { url = 'https://maven.fabricmc.net/' }
-    maven { url = 'https://maven.shedaniel.me/' } // ClothConfig & ModMenu
+    maven { url = 'https://maven.shedaniel.me/' }
 }
 
 dependencies {
     minecraft "com.mojang:minecraft:1.21"
     mappings "net.fabricmc:yarn:1.21+build.6:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.15.11"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.91.1+1.21" // working version
-    modImplementation "me.shedaniel.cloth:cloth-config2:9.1.0"           // working version
-    modImplementation "com.terraformersmc:modmenu:6.6.1"                // working version
+    modImplementation "net.fabricmc:fabric-loader:0.15.10"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.91.0"
+    modImplementation "me.shedaniel.cloth:cloth-config2:9.0.75"
+    modImplementation "com.terraformersmc:modmenu:6.5.1"
 }
 
 tasks.withType(JavaCompile) {
