@@ -1,0 +1,23 @@
+{
+  "mod.anchormacro.name": "AnchorMacroAdvanced",
+  "mod.anchormacro.description": "Client-side Fabric mod to automate respawn anchor usage with multiple modes and safe anchor.",
+  
+  "gui.general": "General",
+  "gui.enabled": "Enabled",
+  "gui.safe_anchor": "Safe Anchor",
+  "gui.action_delay": "Action Delay",
+  "gui.autosearch": "AutoSearch",
+  "gui.mode": "Mode",
+  
+  "command.enabled": "[AnchorMacro] Macro enabled",
+  "command.disabled": "[AnchorMacro] Macro disabled",
+  "command.reload": "[AnchorMacro] Config reloaded",
+  "command.info": "[AnchorMacro] Info: Enabled: %s, Mode: %s, SafeAnchor: %s, AutoSearch: %s, ActionDelay: %d",
+  "command.mode_set": "[AnchorMacro] Mode set to %s",
+  "command.invalid_mode": "[AnchorMacro] Invalid mode! Use normal/double/human",
+  "command.delay_set": "[AnchorMacro] Action delay set to %d ticks",
+  "command.slot_set": "[AnchorMacro] %s slot set to %d",
+  "command.autosearch_set": "[AnchorMacro] AutoSearch set to %s",
+  "command.safeanchor_set": "[AnchorMacro] Safe Anchor set to %s",
+  "command.gui_open": "[AnchorMacro] GUI opened"
+}
