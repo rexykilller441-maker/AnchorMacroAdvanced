@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
-# Gradle wrapper launcher for UNIX
+
+##############################################################################
+# Gradle start-up script for UN*X
+##############################################################################
+
+# Add default JAVA_HOME if needed
 JAVA_HOME=${JAVA_HOME:-}
+
 DIR="$( cd "$( dirname "$0" )" && pwd )"
-exec "$DIR/gradle/wrapper/gradle-wrapper.jar" "$@"
+exec java -jar "$DIR/gradle/wrapper/gradle-wrapper.jar" "$@"
