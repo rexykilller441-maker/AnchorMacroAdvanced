@@ -1,1 +1,10 @@
-
+/build/
+/out/
+/gradle/
+/*.iml
+/.idea/
+/.gradle/
+/*.log
+/.DS_Store
+/.vscode/
+/*.jar
