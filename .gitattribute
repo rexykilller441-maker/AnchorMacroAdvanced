@@ -1,0 +1,6 @@
+* text=auto
+*.java text
+*.gradle text
+*.json text
+*.yml text
+*.properties text
