@@ -33,7 +33,7 @@ jobs:
         restore-keys: gradle-
 
     - name: Build Mod
-      run: ./gradlew build --no-daemon
+      run: ./gradlew clean build --no-daemon
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
