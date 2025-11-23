@@ -13,6 +13,11 @@ public class GGCommand {
 
     public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
         dispatcher.register(ClientCommandManager.literal("gg")
+            .then(ClientCommandManager.literal("gui")
+                .executes(ctx -> {
+                    com.anchormacro.gui.AnchorMacroConfigScreen.open();
+                    return 1;
+                }))
             .then(ClientCommandManager.literal("enable")
                 .executes(ctx -> {
                     AnchorMacroAdvanced.config.enabled = true;
