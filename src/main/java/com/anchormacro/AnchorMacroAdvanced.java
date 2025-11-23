@@ -33,12 +33,13 @@ public class AnchorMacroAdvanced implements ClientModInitializer {
         executeMacroKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.anchormacro.execute",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_G,
+            GLFW.GLFW_KEY_GRAVE_ACCENT, // ~ key (grave accent)
             "category.anchormacro"
         ));
 
         // Register keybind listener
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            // Toggle macro on/off
             while (toggleMacroKey.wasPressed()) {
                 config.enabled = !config.enabled;
                 config.save();
@@ -50,8 +51,9 @@ public class AnchorMacroAdvanced implements ClientModInitializer {
                 }
             }
 
+            // Execute macro (works regardless of enabled status)
             while (executeMacroKey.wasPressed()) {
-                if (config.enabled) {
+                if (client.player != null && client.world != null) {
                     MacroExecutor.runMacro();
                 }
             }
