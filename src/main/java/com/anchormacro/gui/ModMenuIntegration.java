@@ -19,7 +19,9 @@ public class ModMenuIntegration implements ModMenuApi {
 
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
             ConfigCategory general = builder.getOrCreateCategory(Text.literal("General"));
+            ConfigCategory delays = builder.getOrCreateCategory(Text.literal("Delays"));
 
+            // General settings
             general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Enabled"), AnchorMacroAdvanced.config.enabled)
                     .setDefaultValue(false)
                     .setSaveConsumer(val -> { 
@@ -44,12 +46,13 @@ public class ModMenuIntegration implements ModMenuApi {
                     })
                     .build());
 
-            general.addEntry(entryBuilder.startIntSlider(Text.literal("Action Delay"), AnchorMacroAdvanced.config.actionDelay, 0, 10)
-                    .setDefaultValue(2)
+            general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Air Place"), AnchorMacroAdvanced.config.airPlace)
+                    .setDefaultValue(false)
                     .setSaveConsumer(val -> { 
-                        AnchorMacroAdvanced.config.actionDelay = val; 
+                        AnchorMacroAdvanced.config.airPlace = val; 
                         AnchorMacroAdvanced.config.save(); 
                     })
+                    .setTooltip(Text.literal("Place anchors in the air"))
                     .build());
 
             general.addEntry(entryBuilder.startIntSlider(Text.literal("Anchor Slot"), AnchorMacroAdvanced.config.anchorSlot, 1, 9)
@@ -92,6 +95,34 @@ public class ModMenuIntegration implements ModMenuApi {
                         AnchorMacroAdvanced.config.save(); 
                     })
                     .setTooltip(Text.literal("Adds random delays in human mode for more legit gameplay"))
+                    .build());
+
+            // Delay settings (in ticks - 1 tick = 50ms)
+            delays.addEntry(entryBuilder.startIntSlider(Text.literal("Place Delay"), AnchorMacroAdvanced.config.placeDelay, 0, 20)
+                    .setDefaultValue(0)
+                    .setSaveConsumer(val -> { 
+                        AnchorMacroAdvanced.config.placeDelay = val; 
+                        AnchorMacroAdvanced.config.save(); 
+                    })
+                    .setTooltip(Text.literal("Delay after placing anchor (ticks)"))
+                    .build());
+
+            delays.addEntry(entryBuilder.startIntSlider(Text.literal("Charge Delay"), AnchorMacroAdvanced.config.chargeDelay, 0, 20)
+                    .setDefaultValue(0)
+                    .setSaveConsumer(val -> { 
+                        AnchorMacroAdvanced.config.chargeDelay = val; 
+                        AnchorMacroAdvanced.config.save(); 
+                    })
+                    .setTooltip(Text.literal("Delay after charging anchor (ticks)"))
+                    .build());
+
+            delays.addEntry(entryBuilder.startIntSlider(Text.literal("Detonate Delay"), AnchorMacroAdvanced.config.detonateDelay, 0, 20)
+                    .setDefaultValue(0)
+                    .setSaveConsumer(val -> { 
+                        AnchorMacroAdvanced.config.detonateDelay = val; 
+                        AnchorMacroAdvanced.config.save(); 
+                    })
+                    .setTooltip(Text.literal("Delay before detonating (ticks)"))
                     .build());
 
             builder.setSavingRunnable(() -> {
