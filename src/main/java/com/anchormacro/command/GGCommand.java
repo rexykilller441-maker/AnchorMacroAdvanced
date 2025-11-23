@@ -32,6 +32,13 @@ public class GGCommand {
                     sendFeedback("Macro disabled");
                     return 1;
                 }))
+            .then(ClientCommandManager.literal("airplace")
+                .executes(ctx -> {
+                    AnchorMacroAdvanced.config.airPlace = !AnchorMacroAdvanced.config.airPlace;
+                    AnchorMacroAdvanced.config.save();
+                    sendFeedback("Air Place: " + (AnchorMacroAdvanced.config.airPlace ? "ON" : "OFF"));
+                    return 1;
+                }))
             .then(ClientCommandManager.literal("reload")
                 .executes(ctx -> {
                     AnchorMacroAdvanced.config = AnchorMacroAdvanced.config.load();
@@ -46,17 +53,40 @@ public class GGCommand {
                     sendFeedback("Mode: " + cfg.mode);
                     sendFeedback("Safe Anchor: " + cfg.safeAnchor);
                     sendFeedback("AutoSearch: " + cfg.autoSearch);
-                    sendFeedback("Action Delay: " + cfg.actionDelay);
+                    sendFeedback("Air Place: " + cfg.airPlace);
+                    sendFeedback("Place Delay: " + cfg.placeDelay + " ticks");
+                    sendFeedback("Charge Delay: " + cfg.chargeDelay + " ticks");
+                    sendFeedback("Detonate Delay: " + cfg.detonateDelay + " ticks");
                     return 1;
                 }))
-            .then(ClientCommandManager.literal("action")
+            .then(ClientCommandManager.literal("place")
                 .then(ClientCommandManager.literal("delay")
-                    .then(ClientCommandManager.argument("ticks", IntegerArgumentType.integer(0))
+                    .then(ClientCommandManager.argument("ticks", IntegerArgumentType.integer(0, 20))
                         .executes(ctx -> {
                             int ticks = IntegerArgumentType.getInteger(ctx, "ticks");
-                            AnchorMacroAdvanced.config.actionDelay = ticks;
+                            AnchorMacroAdvanced.config.placeDelay = ticks;
                             AnchorMacroAdvanced.config.save();
-                            sendFeedback("Action delay set to " + ticks + " ticks");
+                            sendFeedback("Place delay set to " + ticks + " ticks");
+                            return 1;
+                        }))))
+            .then(ClientCommandManager.literal("charge")
+                .then(ClientCommandManager.literal("delay")
+                    .then(ClientCommandManager.argument("ticks", IntegerArgumentType.integer(0, 20))
+                        .executes(ctx -> {
+                            int ticks = IntegerArgumentType.getInteger(ctx, "ticks");
+                            AnchorMacroAdvanced.config.chargeDelay = ticks;
+                            AnchorMacroAdvanced.config.save();
+                            sendFeedback("Charge delay set to " + ticks + " ticks");
+                            return 1;
+                        }))))
+            .then(ClientCommandManager.literal("detonate")
+                .then(ClientCommandManager.literal("delay")
+                    .then(ClientCommandManager.argument("ticks", IntegerArgumentType.integer(0, 20))
+                        .executes(ctx -> {
+                            int ticks = IntegerArgumentType.getInteger(ctx, "ticks");
+                            AnchorMacroAdvanced.config.detonateDelay = ticks;
+                            AnchorMacroAdvanced.config.save();
+                            sendFeedback("Detonate delay set to " + ticks + " ticks");
                             return 1;
                         }))))
             .then(ClientCommandManager.literal("modes")
@@ -120,4 +150,4 @@ public class GGCommand {
     private static void sendFeedback(String msg) {
         MinecraftClient.getInstance().player.sendMessage(Text.literal("[AnchorMacro] " + msg), false);
     }
-                                     }
+}
