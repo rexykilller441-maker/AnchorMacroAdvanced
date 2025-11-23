@@ -1,6 +1,7 @@
 package com.anchormacro.command;
 
 import com.anchormacro.AnchorMacroAdvanced;
+import com.anchormacro.macro.MacroExecutor;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -32,6 +33,18 @@ public class GGCommand {
                     sendFeedback("Macro disabled");
                     return 1;
                 }))
+            .then(ClientCommandManager.literal("old")
+                .executes(ctx -> {
+                    MacroExecutor.setMode(MacroExecutor.Mode.OLD);
+                    sendFeedback("Switched to OLD macro mode (slow)");
+                    return 1;
+                }))
+            .then(ClientCommandManager.literal("new")
+                .executes(ctx -> {
+                    MacroExecutor.setMode(MacroExecutor.Mode.NEW);
+                    sendFeedback("Switched to NEW macro mode (fast)");
+                    return 1;
+                }))
             .then(ClientCommandManager.literal("airplace")
                 .executes(ctx -> {
                     AnchorMacroAdvanced.config.airPlace = !AnchorMacroAdvanced.config.airPlace;
@@ -57,8 +70,10 @@ public class GGCommand {
                     sendFeedback("Place Delay: " + cfg.placeDelay + " ticks");
                     sendFeedback("Charge Delay: " + cfg.chargeDelay + " ticks");
                     sendFeedback("Detonate Delay: " + cfg.detonateDelay + " ticks");
+                    sendFeedback("Macro Executor Mode: " + MacroExecutor.getMode().name());
                     return 1;
                 }))
+            // Delays
             .then(ClientCommandManager.literal("place")
                 .then(ClientCommandManager.literal("delay")
                     .then(ClientCommandManager.argument("ticks", IntegerArgumentType.integer(0, 20))
@@ -89,37 +104,7 @@ public class GGCommand {
                             sendFeedback("Detonate delay set to " + ticks + " ticks");
                             return 1;
                         }))))
-            .then(ClientCommandManager.literal("modes")
-                .then(ClientCommandManager.argument("mode", StringArgumentType.word())
-                    .executes(ctx -> {
-                        String mode = StringArgumentType.getString(ctx, "mode");
-                        if (!mode.equals("normal") && !mode.equals("double") && !mode.equals("human")) {
-                            sendFeedback("Invalid mode! Use normal/double/human");
-                            return 0;
-                        }
-                        AnchorMacroAdvanced.config.mode = mode;
-                        AnchorMacroAdvanced.config.save();
-                        sendFeedback("Mode set to " + mode);
-                        return 1;
-                    })))
-            .then(ClientCommandManager.literal("safeanchor")
-                .then(ClientCommandManager.argument("onoff", StringArgumentType.word())
-                    .executes(ctx -> {
-                        String val = StringArgumentType.getString(ctx, "onoff");
-                        AnchorMacroAdvanced.config.safeAnchor = val.equalsIgnoreCase("on");
-                        AnchorMacroAdvanced.config.save();
-                        sendFeedback("Safe Anchor set to " + AnchorMacroAdvanced.config.safeAnchor);
-                        return 1;
-                    })))
-            .then(ClientCommandManager.literal("autosearch")
-                .then(ClientCommandManager.argument("onoff", StringArgumentType.word())
-                    .executes(ctx -> {
-                        String val = StringArgumentType.getString(ctx, "onoff");
-                        AnchorMacroAdvanced.config.autoSearch = val.equalsIgnoreCase("on");
-                        AnchorMacroAdvanced.config.save();
-                        sendFeedback("AutoSearch set to " + AnchorMacroAdvanced.config.autoSearch);
-                        return 1;
-                    })))
+            // Slots
             .then(ClientCommandManager.literal("anchorslot")
                 .then(ClientCommandManager.argument("slot", IntegerArgumentType.integer(1,9))
                     .executes(ctx -> {
@@ -142,6 +127,25 @@ public class GGCommand {
                         AnchorMacroAdvanced.config.totemSlot = IntegerArgumentType.getInteger(ctx,"slot");
                         AnchorMacroAdvanced.config.save();
                         sendFeedback("Totem slot set to " + AnchorMacroAdvanced.config.totemSlot);
+                        return 1;
+                    })))
+            // Boolean toggles
+            .then(ClientCommandManager.literal("safeanchor")
+                .then(ClientCommandManager.argument("onoff", StringArgumentType.word())
+                    .executes(ctx -> {
+                        String val = StringArgumentType.getString(ctx, "onoff");
+                        AnchorMacroAdvanced.config.safeAnchor = val.equalsIgnoreCase("on");
+                        AnchorMacroAdvanced.config.save();
+                        sendFeedback("Safe Anchor set to " + AnchorMacroAdvanced.config.safeAnchor);
+                        return 1;
+                    })))
+            .then(ClientCommandManager.literal("autosearch")
+                .then(ClientCommandManager.argument("onoff", StringArgumentType.word())
+                    .executes(ctx -> {
+                        String val = StringArgumentType.getString(ctx, "onoff");
+                        AnchorMacroAdvanced.config.autoSearch = val.equalsIgnoreCase("on");
+                        AnchorMacroAdvanced.config.save();
+                        sendFeedback("AutoSearch set to " + AnchorMacroAdvanced.config.autoSearch);
                         return 1;
                     })))
         );
