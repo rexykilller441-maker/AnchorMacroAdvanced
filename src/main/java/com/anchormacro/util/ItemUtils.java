@@ -8,6 +8,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 public class ItemUtils {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
@@ -47,25 +50,50 @@ public class ItemUtils {
     public static void placeBlockAtCursor(Item item) {
         if (mc.player == null || mc.world == null) return;
         
-        // Use the player's crosshair target (what they're looking at)
         HitResult hitResult = mc.crosshairTarget;
         
+        // Air place mode - place in front of player even in air
+        if (AnchorMacroAdvanced.config.airPlace && (hitResult == null || hitResult.getType() != HitResult.Type.BLOCK)) {
+            // Calculate position 3 blocks in front of player
+            Vec3d playerPos = mc.player.getPos();
+            Vec3d lookVec = mc.player.getRotationVec(1.0f);
+            BlockPos targetPos = BlockPos.ofFloored(playerPos.add(lookVec.multiply(3)));
+            
+            // Create a fake hit result for air placement
+            BlockHitResult fakeHit = new BlockHitResult(
+                Vec3d.ofCenter(targetPos),
+                Direction.DOWN,
+                targetPos.down(),
+                false
+            );
+            
+            ActionResult result = mc.interactionManager.interactBlock(
+                mc.player, 
+                Hand.MAIN_HAND,
+                fakeHit
+            );
+            
+            if (result.isAccepted()) {
+                mc.player.swingHand(Hand.MAIN_HAND);
+            }
+            return;
+        }
+        
+        // Normal placement - looking at a block
         if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult) hitResult;
             
-            // Send the interaction to the server so others can see it
             ActionResult result = mc.interactionManager.interactBlock(
                 mc.player, 
                 Hand.MAIN_HAND,
                 blockHitResult
             );
             
-            // Swing arm animation so others can see the action
             if (result.isAccepted()) {
                 mc.player.swingHand(Hand.MAIN_HAND);
             }
         } else {
-            // If not looking at a block, try to place in front of player
+            // Try to place in front of player
             ActionResult result = mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
             
             if (result.isAccepted()) {
@@ -77,20 +105,17 @@ public class ItemUtils {
     public static void useItemOnBlock(Item item) {
         if (mc.player == null || mc.world == null) return;
         
-        // Use the player's crosshair target (what they're looking at)
         HitResult hitResult = mc.crosshairTarget;
         
         if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult) hitResult;
             
-            // Send the interaction to the server (charge or detonate anchor)
             ActionResult result = mc.interactionManager.interactBlock(
                 mc.player, 
                 Hand.MAIN_HAND,
                 blockHitResult
             );
             
-            // Swing arm animation so others can see the action
             if (result.isAccepted()) {
                 mc.player.swingHand(Hand.MAIN_HAND);
             }
@@ -100,30 +125,22 @@ public class ItemUtils {
     public static void placeGlowstoneInFrontOfAnchor() {
         if (mc.player == null || mc.world == null) return;
         
-        // Get the block we're looking at (should be the anchor)
         HitResult hitResult = mc.crosshairTarget;
         
         if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult) hitResult;
             
-            // Get the position of the clicked block (anchor)
-            net.minecraft.util.math.BlockPos anchorPos = blockHitResult.getBlockPos();
+            BlockPos anchorPos = blockHitResult.getBlockPos();
+            Direction side = blockHitResult.getSide();
+            BlockPos glowstonePos = anchorPos.offset(side);
             
-            // Get the side we clicked on - place glowstone on that side
-            net.minecraft.util.math.Direction side = blockHitResult.getSide();
-            
-            // Calculate where to place the glowstone block (on the clicked side of anchor)
-            net.minecraft.util.math.BlockPos glowstonePos = anchorPos.offset(side);
-            
-            // Create a new hit result for the glowstone placement position
             BlockHitResult newHitResult = new BlockHitResult(
                 blockHitResult.getPos(),
-                side.getOpposite(), // Place against the anchor
+                side.getOpposite(),
                 glowstonePos,
                 false
             );
             
-            // Place the glowstone block
             ActionResult result = mc.interactionManager.interactBlock(
                 mc.player, 
                 Hand.MAIN_HAND,
