@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "anchormacroadvanced",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "name": "AnchorMacroAdvanced",
   "description": "Client-side Fabric mod to automate respawn anchor usage with multiple modes and safe anchor.",
   "authors": [
@@ -17,11 +17,14 @@
   "entrypoints": {
     "client": [
       "com.anchormacro.AnchorMacroAdvanced"
+    ],
+    "modmenu": [
+      "com.anchormacro.gui.ModMenuIntegration"
     ]
   },
   "depends": {
     "fabricloader": ">=0.15.0",
-    "fabric": "*",
+    "fabric-api": "*",
     "minecraft": "1.21",
     "cloth-config2": "*",
     "modmenu": "*"
