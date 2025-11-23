@@ -33,7 +33,7 @@ public class AnchorMacroAdvanced implements ClientModInitializer {
         executeMacroKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.anchormacro.execute",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_GRAVE_ACCENT, // ~ key (grave accent)
+            GLFW.GLFW_KEY_GRAVE_ACCENT, // ~ key
             "category.anchormacro"
         ));
 
@@ -41,7 +41,7 @@ public class AnchorMacroAdvanced implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             // Tick the macro state machine
             MacroExecutor.tick();
-            
+
             // Toggle macro on/off
             while (toggleMacroKey.wasPressed()) {
                 config.enabled = !config.enabled;
@@ -66,5 +66,14 @@ public class AnchorMacroAdvanced implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             GGCommand.register(dispatcher);
         });
+    }
+
+    // Switch between old and new macro modes
+    public static void setMacroMode(String mode) {
+        if ("old".equalsIgnoreCase(mode)) {
+            MacroExecutor.setMode(MacroExecutor.Mode.OLD);
+        } else if ("new".equalsIgnoreCase(mode)) {
+            MacroExecutor.setMode(MacroExecutor.Mode.NEW);
+        }
     }
 }
