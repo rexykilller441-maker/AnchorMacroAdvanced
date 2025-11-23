@@ -120,4 +120,4 @@ public class GGCommand {
     private static void sendFeedback(String msg) {
         MinecraftClient.getInstance().player.sendMessage(Text.literal("[AnchorMacro] " + msg), false);
     }
-}
+                                     }
