@@ -85,6 +85,15 @@ public class ModMenuIntegration implements ModMenuApi {
                     .setTooltip(Text.literal("Options: normal, double, or human"))
                     .build());
 
+            general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Legit Mode"), AnchorMacroAdvanced.config.legitMode)
+                    .setDefaultValue(false)
+                    .setSaveConsumer(val -> { 
+                        AnchorMacroAdvanced.config.legitMode = val; 
+                        AnchorMacroAdvanced.config.save(); 
+                    })
+                    .setTooltip(Text.literal("Adds random delays in human mode for more legit gameplay"))
+                    .build());
+
             builder.setSavingRunnable(() -> {
                 AnchorMacroAdvanced.config.save();
             });
