@@ -46,7 +46,7 @@ public class MacroExecutor {
             }
             case WAIT_AFTER_PLACE -> {
                 ItemUtils.placeBlockAtCursor(Items.RESPAWN_ANCHOR);
-                delayTicks = getDelay();
+                delayTicks = getPlaceDelay();
                 state = MacroState.CHARGE_ANCHOR;
             }
             case CHARGE_ANCHOR -> {
@@ -64,10 +64,10 @@ public class MacroExecutor {
                 ItemUtils.useItemOnBlock(Items.GLOWSTONE);
                 
                 if (AnchorMacroAdvanced.config.safeAnchor) {
-                    delayTicks = getDelay();
+                    delayTicks = getChargeDelay();
                     state = MacroState.COMPLETE;
                 } else {
-                    delayTicks = getDelay();
+                    delayTicks = getChargeDelay();
                     state = MacroState.SWITCH_TO_TOTEM;
                 }
             }
@@ -83,7 +83,7 @@ public class MacroExecutor {
                 state = MacroState.WAIT_BEFORE_DETONATE;
             }
             case WAIT_BEFORE_DETONATE -> {
-                delayTicks = getDelay();
+                delayTicks = getDetonateDelay();
                 state = MacroState.DETONATE_ANCHOR;
             }
             case DETONATE_ANCHOR -> {
@@ -120,11 +120,31 @@ public class MacroExecutor {
         state = MacroState.PLACE_ANCHOR;
     }
 
-    private static int getDelay() {
-        int delay = AnchorMacroAdvanced.config.actionDelay;
+    private static int getPlaceDelay() {
+        int delay = AnchorMacroAdvanced.config.placeDelay;
         
         if ("human".equals(AnchorMacroAdvanced.config.mode) && AnchorMacroAdvanced.config.legitMode) {
-            delay += (int)(Math.random() * 3); // Add 0-2 ticks random delay
+            delay += (int)(Math.random() * 3);
+        }
+        
+        return delay;
+    }
+
+    private static int getChargeDelay() {
+        int delay = AnchorMacroAdvanced.config.chargeDelay;
+        
+        if ("human".equals(AnchorMacroAdvanced.config.mode) && AnchorMacroAdvanced.config.legitMode) {
+            delay += (int)(Math.random() * 3);
+        }
+        
+        return delay;
+    }
+
+    private static int getDetonateDelay() {
+        int delay = AnchorMacroAdvanced.config.detonateDelay;
+        
+        if ("human".equals(AnchorMacroAdvanced.config.mode) && AnchorMacroAdvanced.config.legitMode) {
+            delay += (int)(Math.random() * 3);
         }
         
         return delay;
