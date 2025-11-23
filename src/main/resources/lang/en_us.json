@@ -12,6 +12,7 @@
   "gui.action_delay": "Action Delay",
   "gui.autosearch": "AutoSearch",
   "gui.mode": "Mode",
+  "gui.legit_mode": "Legit Mode",
   
   "command.enabled": "[AnchorMacro] Macro enabled",
   "command.disabled": "[AnchorMacro] Macro disabled",
