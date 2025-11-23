@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "anchormacroadvanced",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "name": "AnchorMacroAdvanced",
   "description": "Client-side Fabric mod to automate respawn anchor usage with multiple modes and safe anchor.",
   "authors": [
