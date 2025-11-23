@@ -36,13 +36,21 @@ public class GGCommand {
             .then(ClientCommandManager.literal("old")
                 .executes(ctx -> {
                     MacroExecutor.setMode(MacroExecutor.Mode.OLD);
-                    sendFeedback("Switched to OLD macro mode (slow)");
+                    sendFeedback("Switched to OLD macro mode");
                     return 1;
                 }))
             .then(ClientCommandManager.literal("new")
                 .executes(ctx -> {
                     MacroExecutor.setMode(MacroExecutor.Mode.NEW);
-                    sendFeedback("Switched to NEW macro mode (fast)");
+                    sendFeedback("Switched to NEW macro mode");
+                    return 1;
+                }))
+            .then(ClientCommandManager.literal("execute")
+                .executes(ctx -> {
+                    if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().world != null) {
+                        MacroExecutor.runMacro();
+                        sendFeedback("Macro executed");
+                    }
                     return 1;
                 }))
             .then(ClientCommandManager.literal("airplace")
@@ -63,7 +71,7 @@ public class GGCommand {
                     var cfg = AnchorMacroAdvanced.config;
                     sendFeedback("AnchorMacroAdvanced v1.0");
                     sendFeedback("Enabled: " + cfg.enabled);
-                    sendFeedback("Mode: " + cfg.mode);
+                    sendFeedback("Mode (features): " + cfg.mode);
                     sendFeedback("Safe Anchor: " + cfg.safeAnchor);
                     sendFeedback("AutoSearch: " + cfg.autoSearch);
                     sendFeedback("Air Place: " + cfg.airPlace);
@@ -73,7 +81,6 @@ public class GGCommand {
                     sendFeedback("Macro Executor Mode: " + MacroExecutor.getMode().name());
                     return 1;
                 }))
-            // Delays
             .then(ClientCommandManager.literal("place")
                 .then(ClientCommandManager.literal("delay")
                     .then(ClientCommandManager.argument("ticks", IntegerArgumentType.integer(0, 20))
@@ -104,7 +111,6 @@ public class GGCommand {
                             sendFeedback("Detonate delay set to " + ticks + " ticks");
                             return 1;
                         }))))
-            // Slots
             .then(ClientCommandManager.literal("anchorslot")
                 .then(ClientCommandManager.argument("slot", IntegerArgumentType.integer(1,9))
                     .executes(ctx -> {
@@ -129,7 +135,6 @@ public class GGCommand {
                         sendFeedback("Totem slot set to " + AnchorMacroAdvanced.config.totemSlot);
                         return 1;
                     })))
-            // Boolean toggles
             .then(ClientCommandManager.literal("safeanchor")
                 .then(ClientCommandManager.argument("onoff", StringArgumentType.word())
                     .executes(ctx -> {
