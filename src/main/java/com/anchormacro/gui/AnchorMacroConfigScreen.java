@@ -80,7 +80,16 @@ public class AnchorMacroConfigScreen {
                     AnchorMacroAdvanced.config.mode = val; 
                     AnchorMacroAdvanced.config.save(); 
                 })
-                .setTooltip(Text.literal("normal, double, or human"))
+                .setTooltip(Text.literal("Options: normal, double, or human"))
+                .build());
+
+        category.addEntry(entryBuilder.startBooleanToggle(Text.literal("Legit Mode"), AnchorMacroAdvanced.config.legitMode)
+                .setDefaultValue(false)
+                .setSaveConsumer(val -> { 
+                    AnchorMacroAdvanced.config.legitMode = val; 
+                    AnchorMacroAdvanced.config.save(); 
+                })
+                .setTooltip(Text.literal("Adds random delays in human mode"))
                 .build());
 
         builder.setSavingRunnable(() -> {
@@ -93,4 +102,4 @@ public class AnchorMacroConfigScreen {
     public static void open() {
         MinecraftClient.getInstance().setScreen(create(MinecraftClient.getInstance().currentScreen));
     }
-}
+                          }
