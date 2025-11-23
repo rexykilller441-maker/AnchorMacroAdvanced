@@ -2,6 +2,10 @@
   "mod.anchormacro.name": "AnchorMacroAdvanced",
   "mod.anchormacro.description": "Client-side Fabric mod to automate respawn anchor usage with multiple modes and safe anchor.",
   
+  "key.anchormacro.toggle": "Toggle Anchor Macro",
+  "key.anchormacro.execute": "Execute Anchor Macro",
+  "category.anchormacro": "Anchor Macro Advanced",
+  
   "gui.general": "General",
   "gui.enabled": "Enabled",
   "gui.safe_anchor": "Safe Anchor",
