@@ -2,6 +2,7 @@ package com.anchormacro.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.anchormacro.AnchorMacroAdvanced;
 
 import java.io.File;
 import java.io.FileReader;
@@ -18,16 +19,16 @@ public class MacroConfig {
     public String mode = "normal"; // normal, double, human
     public boolean enabled = true;
     public boolean legitMode = false;
-    
-    // NEW: Separate delays for each action (in ticks)
-    public int placeDelay = 0;      // Delay after placing anchor
-    public int chargeDelay = 0;     // Delay after charging anchor
-    public int detonateDelay = 0;   // Delay before detonating
-    
-    // NEW: Air place feature
+
+    // delays in ticks
+    public int placeDelay = 0;
+    public int chargeDelay = 0;
+    public int detonateDelay = 0;
+
+    // air place option
     public boolean airPlace = false;
-    
-    // DEPRECATED: kept for backwards compatibility
+
+    // legacy field
     public int actionDelay = 2;
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -40,7 +41,9 @@ public class MacroConfig {
                 config.save();
                 return config;
             }
-            return gson.fromJson(new FileReader(file), MacroConfig.class);
+            try (FileReader fr = new FileReader(file)) {
+                return gson.fromJson(fr, MacroConfig.class);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return new MacroConfig();
@@ -50,9 +53,7 @@ public class MacroConfig {
     public void save() {
         try {
             File configDir = new File("config");
-            if (!configDir.exists()) {
-                configDir.mkdirs();
-            }
+            if (!configDir.exists()) configDir.mkdirs();
             try (FileWriter writer = new FileWriter("config/anchormacro.json")) {
                 gson.toJson(this, writer);
             }
