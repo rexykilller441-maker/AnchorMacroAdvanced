@@ -39,7 +39,7 @@ public class AnchorMacroAdvanced implements ClientModInitializer {
 
         // Register tick event for macro execution and keybind handling
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            // Tick the macro state machine
+            // Tick the macro state machines
             MacroExecutor.tick();
 
             // Toggle macro on/off
@@ -68,7 +68,7 @@ public class AnchorMacroAdvanced implements ClientModInitializer {
         });
     }
 
-    // Switch between old and new macro modes
+    // Utility to set mode by string (optional)
     public static void setMacroMode(String mode) {
         if ("old".equalsIgnoreCase(mode)) {
             MacroExecutor.setMode(MacroExecutor.Mode.OLD);
