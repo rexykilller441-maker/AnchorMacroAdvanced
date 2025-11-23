@@ -37,8 +37,11 @@ public class AnchorMacroAdvanced implements ClientModInitializer {
             "category.anchormacro"
         ));
 
-        // Register keybind listener
+        // Register tick event for macro execution and keybind handling
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            // Tick the macro state machine
+            MacroExecutor.tick();
+            
             // Toggle macro on/off
             while (toggleMacroKey.wasPressed()) {
                 config.enabled = !config.enabled;
