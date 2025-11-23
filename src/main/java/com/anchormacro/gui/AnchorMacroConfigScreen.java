@@ -18,38 +18,68 @@ public class AnchorMacroConfigScreen {
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
         ConfigCategory category = builder.getOrCreateCategory(Text.literal("General"));
 
+        // Enabled toggle
         category.addEntry(entryBuilder.startBooleanToggle(Text.literal("Enabled"), AnchorMacroAdvanced.config.enabled)
-                .setDefaultValue(false)
+                .setDefaultValue(true)
                 .setSaveConsumer(val -> { 
                     AnchorMacroAdvanced.config.enabled = val; 
                     AnchorMacroAdvanced.config.save(); 
                 })
                 .build());
 
+        // Safe Anchor
         category.addEntry(entryBuilder.startBooleanToggle(Text.literal("Safe Anchor"), AnchorMacroAdvanced.config.safeAnchor)
-                .setDefaultValue(true)
+                .setDefaultValue(false)
                 .setSaveConsumer(val -> { 
                     AnchorMacroAdvanced.config.safeAnchor = val; 
                     AnchorMacroAdvanced.config.save(); 
                 })
                 .build());
 
+        // Auto Search
         category.addEntry(entryBuilder.startBooleanToggle(Text.literal("Auto Search"), AnchorMacroAdvanced.config.autoSearch)
-                .setDefaultValue(false)
+                .setDefaultValue(true)
                 .setSaveConsumer(val -> { 
                     AnchorMacroAdvanced.config.autoSearch = val; 
                     AnchorMacroAdvanced.config.save(); 
                 })
                 .build());
 
-        category.addEntry(entryBuilder.startIntSlider(Text.literal("Action Delay"), AnchorMacroAdvanced.config.actionDelay, 0, 10)
-                .setDefaultValue(2)
+        // Air Place
+        category.addEntry(entryBuilder.startBooleanToggle(Text.literal("Air Place"), AnchorMacroAdvanced.config.airPlace)
+                .setDefaultValue(false)
                 .setSaveConsumer(val -> { 
-                    AnchorMacroAdvanced.config.actionDelay = val; 
+                    AnchorMacroAdvanced.config.airPlace = val; 
                     AnchorMacroAdvanced.config.save(); 
                 })
                 .build());
 
+        // Delays
+        category.addEntry(entryBuilder.startIntSlider(Text.literal("Place Delay (ticks)"), AnchorMacroAdvanced.config.placeDelay, 0, 20)
+                .setDefaultValue(0)
+                .setSaveConsumer(val -> { 
+                    AnchorMacroAdvanced.config.placeDelay = val; 
+                    AnchorMacroAdvanced.config.save(); 
+                })
+                .build());
+
+        category.addEntry(entryBuilder.startIntSlider(Text.literal("Charge Delay (ticks)"), AnchorMacroAdvanced.config.chargeDelay, 0, 20)
+                .setDefaultValue(0)
+                .setSaveConsumer(val -> { 
+                    AnchorMacroAdvanced.config.chargeDelay = val; 
+                    AnchorMacroAdvanced.config.save(); 
+                })
+                .build());
+
+        category.addEntry(entryBuilder.startIntSlider(Text.literal("Detonate Delay (ticks)"), AnchorMacroAdvanced.config.detonateDelay, 0, 20)
+                .setDefaultValue(0)
+                .setSaveConsumer(val -> { 
+                    AnchorMacroAdvanced.config.detonateDelay = val; 
+                    AnchorMacroAdvanced.config.save(); 
+                })
+                .build());
+
+        // Slots
         category.addEntry(entryBuilder.startIntSlider(Text.literal("Anchor Slot"), AnchorMacroAdvanced.config.anchorSlot, 1, 9)
                 .setDefaultValue(1)
                 .setSaveConsumer(val -> { 
@@ -67,22 +97,24 @@ public class AnchorMacroConfigScreen {
                 .build());
 
         category.addEntry(entryBuilder.startIntSlider(Text.literal("Totem Slot"), AnchorMacroAdvanced.config.totemSlot, 1, 9)
-                .setDefaultValue(9)
+                .setDefaultValue(3)
                 .setSaveConsumer(val -> { 
                     AnchorMacroAdvanced.config.totemSlot = val; 
                     AnchorMacroAdvanced.config.save(); 
                 })
                 .build());
 
+        // Mode (normal / double / human)
         category.addEntry(entryBuilder.startStrField(Text.literal("Mode"), AnchorMacroAdvanced.config.mode)
                 .setDefaultValue("normal")
                 .setSaveConsumer(val -> { 
                     AnchorMacroAdvanced.config.mode = val; 
                     AnchorMacroAdvanced.config.save(); 
                 })
-                .setTooltip(Text.literal("Options: normal, double, or human"))
+                .setTooltip(Text.literal("Options: normal, double, human"))
                 .build());
 
+        // Legit Mode toggle
         category.addEntry(entryBuilder.startBooleanToggle(Text.literal("Legit Mode"), AnchorMacroAdvanced.config.legitMode)
                 .setDefaultValue(false)
                 .setSaveConsumer(val -> { 
