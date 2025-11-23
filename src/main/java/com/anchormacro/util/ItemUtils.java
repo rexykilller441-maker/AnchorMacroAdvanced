@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.hit.HitResult;
 
 public class ItemUtils {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
@@ -34,17 +34,42 @@ public class ItemUtils {
     }
 
     public static void placeBlockAtCursor(Item item) {
-        // Simplified, normally send right-click packet / use client interaction
-        mc.interactionManager.interactBlock(mc.player, Hand.MAIN_HAND,
-                new BlockHitResult(mc.player.getPos(), mc.player.getHorizontalFacing(), BlockPos.ofFloored(mc.player.getPos()), false));
+        // Use the player's crosshair target (what they're looking at)
+        HitResult hitResult = mc.crosshairTarget;
+        
+        if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+            
+            // Right-click/interact with the block where player is looking
+            mc.interactionManager.interactBlock(
+                mc.player, 
+                Hand.MAIN_HAND,
+                blockHitResult
+            );
+        } else {
+            // If not looking at a block, try to place in front of player
+            mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
+        }
     }
 
     public static void useItemOnBlock(Item item) {
-        placeBlockAtCursor(item);
+        // Use the player's crosshair target (what they're looking at)
+        HitResult hitResult = mc.crosshairTarget;
+        
+        if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+            
+            // Right-click/interact with the block (charge or detonate anchor)
+            mc.interactionManager.interactBlock(
+                mc.player, 
+                Hand.MAIN_HAND,
+                blockHitResult
+            );
+        }
     }
 
     public static void placeGlowstoneInFrontOfAnchor() {
-        // TODO: Implement raycast to front block, place glowstone there
+        // Place glowstone block in front of the anchor (acts as protection)
         useItemOnBlock(Items.GLOWSTONE);
     }
 }
